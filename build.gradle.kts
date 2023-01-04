@@ -1,14 +1,6 @@
 group "mes.inc.aic"
 version "1.0-SNAPSHOT"
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    }
-}
-
 plugins {
     kotlin("multiplatform") version libs.versions.kotlin apply false
     kotlin("android") version libs.versions.kotlin apply false
@@ -18,23 +10,35 @@ plugins {
     alias(libs.plugins.detekt)
 }
 
-detekt {
-    parallel = true
-    ignoreFailures = false
-    autoCorrect = true
-    buildUponDefaultConfig = true
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        txt.required.set(false)
-        sarif.required.set(false)
-        md.required.set(false)
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
-}
 
-dependencies {
-    detektPlugins(libs.detekt.formatting)
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+
+    detekt {
+        parallel = true
+        ignoreFailures = false
+        autoCorrect = true
+        buildUponDefaultConfig = true
+        config.setFrom("${project.rootDir}/config/detekt.yaml")
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt> detekt@{
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            txt.required.set(true)
+            sarif.required.set(true)
+            md.required.set(true)
+        }
+    }
+
+    dependencies {
+        detektPlugins(rootProject.libs.detekt.formatting)
+    }
+
 }
