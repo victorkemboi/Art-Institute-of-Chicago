@@ -24,7 +24,7 @@ allprojects {
         ignoreFailures = false
         autoCorrect = true
         buildUponDefaultConfig = true
-        config.setFrom("${project.rootDir}/config/detekt.yaml")
+        config.setFrom("${project.rootDir}/configs/detekt.yaml")
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt> detekt@{

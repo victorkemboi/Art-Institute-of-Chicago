@@ -10,3 +10,5 @@ pluginManagement {
 rootProject.name = "AIC"
 
 include(":android", ":desktop", ":common")
+
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
