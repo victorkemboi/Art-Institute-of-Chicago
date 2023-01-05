@@ -30,4 +30,6 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(libs.activity.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.core)
 }

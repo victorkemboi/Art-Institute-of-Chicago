@@ -1,5 +1,5 @@
-group "mes.inc.aic"
-version "1.0-SNAPSHOT"
+group = "mes.inc.aic"
+version = "1.0.0"
 
 plugins {
     kotlin("multiplatform") version libs.versions.kotlin apply false
@@ -7,6 +7,7 @@ plugins {
     id("com.android.application") version libs.versions.android.gradle.plugin apply false
     id("com.android.library") version libs.versions.android.gradle.plugin apply false
     id("org.jetbrains.compose") version libs.versions.compose.multiplatform apply false
+    id("com.google.devtools.ksp") version libs.versions.ksp apply false
     alias(libs.plugins.detekt)
 }
 
@@ -40,5 +41,4 @@ allprojects {
     dependencies {
         detektPlugins(rootProject.libs.detekt.formatting)
     }
-
 }

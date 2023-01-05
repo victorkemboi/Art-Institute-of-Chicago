@@ -4,6 +4,8 @@ android-gradle-plugin = "7.3.0"
 compose-multiplatform = "1.2.2"
 detekt = "1.22.0"
 junit5 = "5.9.1"
+ksp = "1.7.20-1.0.8"
+koin = "3.3.2"
 kotlin = "1.7.20"
 
 [plugins]
@@ -19,8 +21,12 @@ activity-compose = { module = "androidx.activity:activity-compose", version.ref 
 androidx-core = { module = "androidx.core:core-ktx", version = "1.9.0" }
 app-compat = { module = "androidx.appcompat:appcompat", version = "1.5.1" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+gradle-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
 junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }

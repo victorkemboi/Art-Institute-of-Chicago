@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("com.google.devtools.ksp")
 }
 
 group = "mes.inc.aic"
@@ -17,9 +18,11 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                api(compose.runtime)
+                api(libs.koin.core)
+                api(libs.koin.test)
             }
         }
         val commonTest by getting {
@@ -59,4 +62,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", project(":common"))
 }
