@@ -1,5 +1,3 @@
-import org.jetbrains.compose.compose
-
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
@@ -7,7 +5,7 @@ plugins {
 }
 
 group = "mes.inc.aic"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 kotlin {
     android()
@@ -31,8 +29,8 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.5.1")
-                api("androidx.core:core-ktx:1.9.0")
+                api(libs.app.compat)
+                api(libs.androidx.core)
             }
         }
         val androidTest by getting {
@@ -50,11 +48,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(33)
+    compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(33)
+        minSdk = 24
+        targetSdk = 33
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
