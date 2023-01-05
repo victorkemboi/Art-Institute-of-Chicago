@@ -50,6 +50,7 @@ kotlin {
 android {
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    namespace = "mes.inc.aic.common"
     defaultConfig {
         minSdk = 24
         targetSdk = 33
