@@ -1,0 +1,21 @@
+name: code analysis
+
+on: [ push, pull_request ]
+
+concurrency:
+  group: environment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-check:
+    name: Lint check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Linting check
+        run: ./gradlew detekt detektDesktopMain detektJvmMain detektMetadataMain
