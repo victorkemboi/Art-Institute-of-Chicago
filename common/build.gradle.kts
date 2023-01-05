@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("com.google.devtools.ksp")
+    id("com.squareup.sqldelight")
 }
 
 group = "mes.inc.aic"
@@ -34,16 +35,18 @@ kotlin {
             dependencies {
                 api(libs.app.compat)
                 api(libs.androidx.core)
+                implementation(libs.sqldelight.android.driver)
             }
         }
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13.2")
+                implementation(libs.junit.vintage.engine)
             }
         }
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
+                implementation(libs.sqldelight.sqlite.driver)
             }
         }
         val desktopTest by getting
@@ -66,4 +69,11 @@ android {
 
 dependencies {
     add("kspCommonMainMetadata", project(":common"))
+}
+
+sqldelight {
+    database("ArtSpaceDatabase") {
+        packageName = "mes.inc.aic.database"
+        sourceFolders = listOf("sqldelight")
+    }
 }

@@ -1,0 +1,22 @@
+CREATE TABLE Artwork(
+localId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+serverId TEXT NOT NULL,
+title TEXT NOT NULL,
+thumbnail TEXT,
+dateDisplay TEXT,
+artistId TEXT,
+categoryTitles TEXT NOT NULL,
+styleTitle TEXT,
+updatedAt TEXT,
+origin TEXT
+);
+
+insertArtwork:
+INSERT INTO Artwork(localId, serverId, title, thumbnail, dateDisplay, artistId, categoryTitles, styleTitle, updatedAt, origin)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+removeAllArtworks:
+DELETE FROM Artwork;
+
+selectAllArtworksInfo:
+SELECT Artwork.* FROM Artwork;

@@ -29,16 +29,25 @@ allprojects {
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt> detekt@{
+//        exclude("**/build/**")
+        exclude("resources/")
+        exclude("build/")
         reports {
             xml.required.set(true)
             html.required.set(true)
-            txt.required.set(true)
-            sarif.required.set(true)
-            md.required.set(true)
+            txt.required.set(false)
+            sarif.required.set(false)
+            md.required.set(false)
         }
     }
 
     dependencies {
         detektPlugins(rootProject.libs.detekt.formatting)
+    }
+}
+
+buildscript {
+    dependencies {
+        classpath(libs.gradle.sqldelight)
     }
 }
