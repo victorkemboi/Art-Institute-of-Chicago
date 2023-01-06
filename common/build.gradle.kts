@@ -22,7 +22,6 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.runtime)
-                api(libs.glide.compose)
                 api(libs.kermit)
                 api(libs.koin.core)
                 api(libs.koin.test)
