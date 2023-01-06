@@ -24,25 +24,25 @@ fun HomeScreenStateScope(
     refreshReels: Boolean = false,
     refreshArtwork: Boolean = false,
     currentState: HomeScreenState = HomeScreenState(),
-    state: @Composable (State<HomeScreenState>) -> Unit = {}
+    scope: @Composable (State<HomeScreenState>) -> Unit = {}
 ) {
     val artworkRepository: ArtworkRepository = getKoinInstance()
-    val mutableState = remember { mutableStateOf(currentState) }
+    val state = remember { mutableStateOf(currentState) }
     LaunchedEffect(refreshReels) {
         if (refreshReels) {
             artworkRepository.fetchArtworkReels().collectLatest { reels ->
-                mutableState.value = mutableState.value.copy(reel = reels.firstOrNull())
+                state.value = state.value.copy(reel = reels.firstOrNull())
             }
         }
     }
     LaunchedEffect(refreshArtwork) {
         if (refreshArtwork) {
             artworkRepository.fetchArtworks().collectLatest { artworks ->
-                mutableState.value = mutableState.value.copy(artworks = artworks)
+                state.value = state.value.copy(artworks = artworks)
             }
         }
     }
-    state(mutableState)
+    scope(state)
 }
 
 @Composable
