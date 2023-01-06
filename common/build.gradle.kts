@@ -23,8 +23,11 @@ kotlin {
                 api(compose.material)
                 api(compose.runtime)
                 api(libs.koin.core)
+//                api(libs.koin.annotations)
+//                ksp(libs.koin.ksp.compiler)
                 api(libs.koin.test)
             }
+            kotlin.srcDirs("build/generated/ksp/main/kotlin")
         }
         val commonTest by getting {
             dependencies {
