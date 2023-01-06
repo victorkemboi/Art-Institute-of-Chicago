@@ -22,9 +22,9 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.runtime)
+                api(libs.glide.compose)
+                api(libs.kermit)
                 api(libs.koin.core)
-//                api(libs.koin.annotations)
-//                ksp(libs.koin.ksp.compiler)
                 api(libs.koin.test)
             }
             kotlin.srcDirs("build/generated/ksp/main/kotlin")
@@ -38,6 +38,7 @@ kotlin {
             dependencies {
                 api(libs.app.compat)
                 api(libs.androidx.core)
+                api(libs.glide.compose)
                 implementation(libs.sqldelight.android.driver)
             }
         }
