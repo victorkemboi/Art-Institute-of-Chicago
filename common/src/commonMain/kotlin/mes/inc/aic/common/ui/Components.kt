@@ -22,8 +22,8 @@ fun Reel(reel: Reel, modifier: Modifier = Modifier) {
                 .align(Alignment.BottomStart)
                 .padding(start = Padding.Medium, bottom = Padding.Medium)
         ) {
-            Text(text = reel.title, style = MaterialTheme.typography.h1)
-            Text(text = reel.title, style = MaterialTheme.typography.subtitle1)
+            Text(text = reel.title, style = MaterialTheme.typography.h4)
+            Text(text = reel.description, style = MaterialTheme.typography.subtitle1)
         }
     }
 }

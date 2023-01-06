@@ -1,22 +1,22 @@
 package mes.inc.aic.common.ui
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.data.repository.ArtworkRepository
@@ -28,9 +28,9 @@ import org.koin.core.component.inject
 fun HomeScreen(modifier: Modifier = Modifier, stateHolder: HomeScreenStateHolder = getKoinInstance()) {
     val state = stateHolder.state.collectAsState()
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)) {
         state.value.reel?.let {
-            Reel(reel = Reel())
+            Reel(reel = it, modifier = Modifier.fillMaxWidth())
         }
         LazyVerticalGrid(columns = GridCells.Adaptive(100.dp)) {
             itemsIndexed(items = state.value.artworks) { _, item ->
@@ -52,7 +52,7 @@ data class HomeScreenState(
 class HomeScreenStateHolder : KoinComponent {
 
     private val artworkRepository: ArtworkRepository by inject()
-    private val coroutineScope: CoroutineScope = MainScope()
+    private val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob())
     private var artworksJob: Job? = null
     private var reelsJob: Job? = null
 

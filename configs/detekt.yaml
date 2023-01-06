@@ -727,6 +727,7 @@ style:
     excludeImports:
       - 'java.util.*'
       - 'androidx.compose.*'
+      - 'kotlinx.coroutines.*'
 
 formatting:
   active: true
