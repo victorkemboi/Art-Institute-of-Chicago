@@ -15,8 +15,11 @@ fun App() {
 
     Button(onClick = {
         text = "Hello, $platformName"
-    }) {
+    }
+
+    ) {
         Text(text
+
         )
     }
 }

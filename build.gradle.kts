@@ -2,13 +2,16 @@ group = "mes.inc.aic"
 version = "1.0.0"
 
 plugins {
-    kotlin("multiplatform") version libs.versions.kotlin apply false
-    kotlin("android") version libs.versions.kotlin apply false
-    id("com.android.application") version libs.versions.android.gradle.plugin apply false
-    id("com.android.library") version libs.versions.android.gradle.plugin apply false
-    id("org.jetbrains.compose") version libs.versions.compose.multiplatform apply false
-    id("com.google.devtools.ksp") version libs.versions.ksp apply false
-    alias(libs.plugins.detekt)
+    @Suppress("DSL_SCOPE_VIOLATION")
+    with(libs) {
+        kotlin("multiplatform") version versions.kotlin apply false
+        kotlin("android") version versions.kotlin apply false
+        id("com.android.application") version versions.android.gradle.plugin apply false
+        id("com.android.library") version versions.android.gradle.plugin apply false
+        id("org.jetbrains.compose") version versions.compose.multiplatform apply false
+        id("com.google.devtools.ksp") version versions.ksp apply false
+        alias(plugins.detekt)
+    }
 }
 
 allprojects {
@@ -29,9 +32,11 @@ allprojects {
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt> detekt@{
-//        exclude("**/build/**")
-        exclude("resources/")
-        exclude("build/")
+        setSource(files(project.projectDir))
+        exclude("**/build/**")
+        exclude {
+            it.file.relativeTo(projectDir).startsWith(project.buildDir.relativeTo(projectDir))
+        }
         reports {
             xml.required.set(true)
             html.required.set(true)
@@ -39,6 +44,10 @@ allprojects {
             sarif.required.set(false)
             md.required.set(false)
         }
+    }
+
+    tasks.register("detektAll") {
+        dependsOn(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>())
     }
 
     dependencies {

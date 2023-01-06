@@ -686,6 +686,8 @@ style:
   UnusedPrivateMember:
     active: true
     allowedNames: '(_|ignored|expected|serialVersionUID)'
+    excludes:
+      - "**/build.gradle.kts"
   UseAnyOrNoneInsteadOfFind:
     active: true
   UseArrayLiteralsInAnnotations:
@@ -797,7 +799,7 @@ formatting:
     active: true
     autoCorrect: true
   NoBlankLineBeforeRbrace:
-    active: false
+    active: true
     autoCorrect: true
   NoConsecutiveBlankLines:
     active: true

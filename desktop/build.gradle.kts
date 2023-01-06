@@ -8,7 +8,6 @@ plugins {
 group = "mes.inc.aic"
 version = "1.0.0"
 
-
 kotlin {
     jvm {
         compilations.all {
