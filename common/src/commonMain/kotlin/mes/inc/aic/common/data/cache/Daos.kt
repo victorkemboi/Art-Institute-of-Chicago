@@ -4,10 +4,9 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
 import mes.inc.aic.common.data.model.Artwork
-import mes.inc.aic.database.ArtSpaceDatabase
+import mes.inc.aic.common.database.ArtworkQueries
 
-internal class ArtworkDao(private val artSpaceDatabase: ArtSpaceDatabase) {
-    private val artworkQueries = artSpaceDatabase.artworkQueries
+internal class ArtworkDao(private val artworkQueries: ArtworkQueries) {
 
     internal fun insert(artwork: Artwork) {
         artworkQueries.insertArtwork(

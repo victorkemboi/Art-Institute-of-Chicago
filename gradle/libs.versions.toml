@@ -10,7 +10,10 @@ ksp = "1.7.20-1.0.8"
 koin = "3.3.2"
 koin-ksp = "1.1.0"
 kotlin = "1.7.20"
+kotlinx-coroutines-test = "1.6.4"
+mockk = "1.13.3"
 sqldelight = "1.5.4"
+turbine = "0.12.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -39,7 +42,10 @@ koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-ksp" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 sqldelight-coroutines-extension = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-native-driver = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
