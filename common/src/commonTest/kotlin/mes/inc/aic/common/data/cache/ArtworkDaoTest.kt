@@ -16,7 +16,7 @@ class ArtworkDaoTest {
     private val artworkCategories = listOf("Painting", "Sculpture", "Architecture")
 
     @Test
-    fun testInsertingArtwork() {
+    fun insertingArtworkIsCalled() {
         val localId = 4L
         val title = "Art 101"
         val artwork = Artwork(
@@ -43,13 +43,13 @@ class ArtworkDaoTest {
     }
 
     @Test
-    fun testFetchingArtworksWithoutQuery() = runTest {
+    fun fetchingArtworksWithoutQueryIsCalled() = runTest {
         artworkDao.fetchArtworks(null).first()
         verify(exactly = 1) { artworkQueries.selectAll(mapper = Artwork.mapper) }
     }
 
     @Test
-    fun testFetchingArtworksWithQuery() = runTest {
+    fun fetchingArtworksWithQueryIsCalled() = runTest {
         val query = "Query"
         artworkDao.fetchArtworks(query).first()
         verify(exactly = 1) { artworkQueries.search(query = "%$query%", mapper = Artwork.mapper) }
