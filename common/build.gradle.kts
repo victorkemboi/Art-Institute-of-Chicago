@@ -31,8 +31,11 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.uiTestJUnit4)
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.compose.ui.test.manifest)
                 implementation(libs.mockk)
                 implementation(libs.turbine)
             }
@@ -47,6 +50,10 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.uiTestJUnit4)
+                implementation(kotlin("test"))
+                implementation(libs.compose.ui.test.manifest)
                 implementation(libs.junit.vintage.engine)
             }
         }

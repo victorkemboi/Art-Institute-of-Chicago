@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "AIC"
+rootProject.name = "Art Space"
 
 include(
     ":android",
