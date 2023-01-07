@@ -20,4 +20,17 @@ jobs:
       - name: Linting check
         run: ./gradlew detekt detektDesktopMain detektJvmMain detektMetadataMain
 
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Linting check
+        run: ./gradlew allTests
+
   
