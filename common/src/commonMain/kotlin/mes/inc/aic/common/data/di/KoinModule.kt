@@ -10,17 +10,16 @@ import org.koin.dsl.module
 
 fun repositoryModule() = module {
     single<ArtworkRepository> { ArtworkRepositoryImpl() }
+}
+
+fun databaseModule() = module {
     single { ArtworkDao(get()) }
 }
 
-fun daoModule() = module {
-    single { ArtworkDao(get()) }
-}
-
-expect fun platformModule(): Module
+expect fun commonModule(): Module
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(repositoryModule(), daoModule(), platformModule())
+        modules(repositoryModule(), databaseModule(), commonModule())
     }

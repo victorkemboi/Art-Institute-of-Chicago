@@ -9,7 +9,7 @@ import mes.inc.aic.database.ArtSpaceDatabase
 internal class ArtworkDao(private val artSpaceDatabase: ArtSpaceDatabase) {
     private val artworkQueries = artSpaceDatabase.artworkQueries
 
-    internal suspend fun insert(artwork: Artwork) {
+    internal fun insert(artwork: Artwork) {
         artworkQueries.insertArtwork(
             localId = null,
             serverId = artwork.serverId,
@@ -34,8 +34,8 @@ internal class ArtworkDao(private val artSpaceDatabase: ArtSpaceDatabase) {
     }
 
     internal fun removeAllArtworks() {
-        artSpaceDatabase.transaction {
-            artSpaceDatabase.artworkQueries.removeAllArtworks()
+        artworkQueries.transaction {
+            artworkQueries.removeAllArtworks()
         }
     }
 }
