@@ -6,9 +6,6 @@ concurrency:
   group: environment-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  GRADLE_OPTS: "android.useAndroidX=true"
-
 jobs:
   lint-check:
     name: Lint check
@@ -16,6 +13,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - run: |
+          echo "${{ secrets.GRADLE_PROPERTIES }}" > gradle.properties
+
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -29,6 +30,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - run: |
+          echo "${{ secrets.GRADLE_PROPERTIES }}" > gradle.properties
+
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
