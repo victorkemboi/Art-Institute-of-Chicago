@@ -25,6 +25,7 @@ kotlin {
                 api(libs.kermit)
                 api(libs.koin.core)
                 api(libs.koin.test)
+                api(libs.sqldelight.coroutines.extension)
             }
             kotlin.srcDirs("build/generated/ksp/main/kotlin")
         }

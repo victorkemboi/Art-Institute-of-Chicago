@@ -1,6 +1,6 @@
 package mes.inc.aic.common.data.di
 
-import mes.inc.aic.common.data.cache.ArtworkAao
+import mes.inc.aic.common.data.cache.ArtworkDao
 import mes.inc.aic.common.data.repository.ArtworkRepository
 import mes.inc.aic.common.data.repository.ArtworkRepositoryImpl
 import org.koin.core.context.startKoin
@@ -10,11 +10,11 @@ import org.koin.dsl.module
 
 fun repositoryModule() = module {
     single<ArtworkRepository> { ArtworkRepositoryImpl() }
-    single { ArtworkAao(get()) }
+    single { ArtworkDao(get()) }
 }
 
 fun daoModule() = module {
-    single { ArtworkAao(get()) }
+    single { ArtworkDao(get()) }
 }
 
 expect fun platformModule(): Module

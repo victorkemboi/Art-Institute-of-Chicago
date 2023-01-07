@@ -8,15 +8,19 @@ artistId TEXT,
 categoryTitles TEXT NOT NULL,
 styleTitle TEXT,
 updatedAt TEXT,
-origin TEXT
+origin TEXT,
+searchString TEXT
 );
 
 insertArtwork:
-INSERT INTO Artwork(localId, serverId, title, thumbnail, dateDisplay, artistId, categoryTitles, styleTitle, updatedAt, origin)
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO Artwork(localId, serverId, title, thumbnail, dateDisplay, artistId, categoryTitles, styleTitle, updatedAt, origin, searchString)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);
 
 removeAllArtworks:
 DELETE FROM Artwork;
 
-selectAllArtworksInfo:
+selectAll:
 SELECT Artwork.* FROM Artwork;
+
+search:
+SELECT * FROM Artwork  WHERE searchString LIKE (:query);

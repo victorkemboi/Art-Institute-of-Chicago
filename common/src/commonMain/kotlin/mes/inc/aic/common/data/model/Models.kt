@@ -4,7 +4,7 @@ import mes.inc.aic.common.extensions.generateRandomNumber
 import mes.inc.aic.common.extensions.generateUuid
 
 data class Artwork(
-    val localId: Int = 0,
+    val localId: Long = 0,
     val serverId: String = generateUuid(),
     val title: String = "Artwork ${generateRandomNumber()}",
     val thumbnail: String? = null,
@@ -14,12 +14,45 @@ data class Artwork(
     val styleTitle: String? = null,
     val updatedAt: String? = null,
     val origin: String? = "Art institute of Chicago",
+    val searchString: String? = "$title $categoryTitles"
 ) {
     fun toReel() = Reel(
         title = title,
         thumbnail = thumbnail,
         type = Reel.ReelType.Artwork(this)
     )
+
+    companion object {
+        val mapper: (
+            Long,
+            String,
+            String,
+            String?,
+            String?,
+            String?,
+            String,
+            String?,
+            String?,
+            String?,
+            String?,
+        ) -> Artwork =
+            { localId, serverId, title, thumbnail, dateDisplay, artistId,
+                categoryTitles, styleTitle, updatedAt, origin, searchString ->
+                Artwork(
+                    localId = localId,
+                    serverId = serverId,
+                    title = title,
+                    thumbnail = thumbnail,
+                    dateDisplay = dateDisplay,
+                    artistId = artistId,
+                    categoryTitles = categoryTitles.replace(" ", "").split(",").map { it.trim() },
+                    styleTitle = styleTitle,
+                    updatedAt = updatedAt,
+                    origin = origin,
+                    searchString = searchString
+                )
+            }
+    }
 }
 
 data class Reel(
