@@ -6,6 +6,9 @@ concurrency:
   group: environment-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  GRADLE_OPTS: "android.useAndroidX=true"
+
 jobs:
   lint-check:
     name: Lint check
