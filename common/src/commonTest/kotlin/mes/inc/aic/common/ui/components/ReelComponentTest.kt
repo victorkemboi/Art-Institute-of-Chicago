@@ -3,12 +3,12 @@ package mes.inc.aic.common.ui.components
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import mes.inc.aic.common.ui.Reel
+import mes.inc.aic.common.ui.ReelComponent
 import org.junit.Rule
 import org.junit.Test
 import mes.inc.aic.common.data.model.Reel as ReelModel
 
-class ReelTest {
+class ReelComponentTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -21,27 +21,26 @@ class ReelTest {
 
     @Test
     fun titleDisplayed() {
-        composeTestRule.setContent { Reel(reel) }
+        composeTestRule.setContent { ReelComponent(reel) }
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
-        composeTestRule.onNodeWithText(description).assertIsDisplayed()
     }
 
     @Test
     fun descriptionDisplayed() {
-        composeTestRule.setContent { Reel(reel) }
+        composeTestRule.setContent { ReelComponent(reel) }
         composeTestRule.onNodeWithText(description).assertIsDisplayed()
     }
 
     @Test
     fun thumbnailNotDisplayed() {
-        composeTestRule.setContent { Reel(reel.copy(thumbnail = null)) }
+        composeTestRule.setContent { ReelComponent(reel.copy(thumbnail = null)) }
         composeTestRule.onNodeWithText(description).assertIsDisplayed()
     }
 
     @Test
     fun thumbnailDisplayed() {
         composeTestRule.setContent {
-            Reel(
+            ReelComponent(
                 reel.copy(
                     thumbnail = "https://images.pexels.com/photos/1906795/pexels-photo-1906795.jpeg"
                 )

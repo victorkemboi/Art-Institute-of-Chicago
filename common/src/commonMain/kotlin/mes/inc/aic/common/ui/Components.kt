@@ -10,13 +10,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.extensions.loadNetworkImage
+import mes.inc.aic.common.utils.NETWORK_IMAGE
 
 @Composable
-fun Reel(reel: Reel, modifier: Modifier = Modifier) {
+fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
     Box(modifier = modifier.background(Primary).heightIn(min = 300.dp)) {
         reel.thumbnail?.let { NetworkImage(it, reel.title) }
         Column(
@@ -56,7 +58,13 @@ fun NetworkImage(link: String, description: String? = null) {
         image = loadNetworkImage(link)
     }
     if (image != null) {
-        image?.let { Image(it, contentDescription = description) }
+        image?.let {
+            Image(
+                bitmap = it,
+                contentDescription = description,
+                modifier = Modifier.testTag(NETWORK_IMAGE)
+            )
+        }
     } else {
         CircularProgressIndicator(progress = 1f)
     }

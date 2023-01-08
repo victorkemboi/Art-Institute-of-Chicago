@@ -61,7 +61,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     ) { state ->
         Column(modifier = modifier.scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)) {
             state.value.reel?.let {
-                Reel(reel = it, modifier = Modifier.fillMaxWidth())
+                ReelComponent(reel = it, modifier = Modifier.fillMaxWidth())
             }
             LazyVerticalGrid(columns = GridCells.Adaptive(100.dp)) {
                 itemsIndexed(items = state.value.artworks) { _, item ->
