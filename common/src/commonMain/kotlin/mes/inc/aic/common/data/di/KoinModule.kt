@@ -1,5 +1,16 @@
 package mes.inc.aic.common.data.di
 
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.cio.endpoint
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.network.tls.CIOCipherSuites
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import mes.inc.aic.common.data.cache.ArtworkDao
 import mes.inc.aic.common.data.repository.ArtworkRepository
 import mes.inc.aic.common.data.repository.ArtworkRepositoryImpl
@@ -17,10 +28,40 @@ fun databaseModule() = module {
     single { ArtworkDao(get<ArtSpaceDatabase>().artworkQueries) }
 }
 
+fun networkModule(enableNetworkLogs: Boolean = false) = module {
+    val client = HttpClient(CIO) {
+        engine {
+            maxConnectionsCount = 1000
+            endpoint {
+                maxConnectionsPerRoute = 100
+                pipelineMaxSize = 20
+                keepAliveTime = 5000
+                connectTimeout = 5000
+                connectAttempts = 5
+            }
+            https { cipherSuites = CIOCipherSuites.SupportedSuites }
+        }
+        install(ContentNegotiation) {
+            json(Json {
+                prettyPrint = true
+                isLenient = true
+            })
+        }
+        if (enableNetworkLogs) {
+            install(Logging) {
+                logger = Logger.DEFAULT
+                level = LogLevel.INFO
+            }
+        }
+    }
+    single { client }
+}
+
 expect fun commonModule(): Module
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
-    startKoin {
-        appDeclaration()
-        modules(repositoryModule(), databaseModule(), commonModule())
-    }
+fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclaration = {}) = startKoin {
+    appDeclaration()
+    modules(
+        repositoryModule(), databaseModule(), commonModule(), networkModule(enableNetworkLogs = enableNetworkLogs)
+    )
+}

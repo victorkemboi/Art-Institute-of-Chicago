@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization") version libs.versions.kotlin
     id("org.jetbrains.compose")
     id("com.android.library")
     id("com.google.devtools.ksp")
@@ -22,9 +23,15 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.runtime)
+                api(libs.coroutines.core)
                 api(libs.kermit)
                 api(libs.koin.core)
                 api(libs.koin.test)
+                api(libs.ktor.client.core)
+                api(libs.ktor.client.cio)
+                api(libs.ktor.client.logging)
+                api(libs.ktor.content.negotiation)
+                api(libs.ktor.serialization.json)
                 api(libs.sqldelight.coroutines.extension)
             }
             kotlin.srcDirs("build/generated/ksp/main/kotlin")
@@ -35,7 +42,7 @@ kotlin {
                 implementation(compose.uiTestJUnit4)
                 implementation(kotlin("test"))
                 implementation(libs.compose.ui.test.manifest)
-                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.coroutines.test)
                 implementation(libs.koin.test.junit4)
                 implementation(libs.mockk)
                 implementation(libs.turbine)
