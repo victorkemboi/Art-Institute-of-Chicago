@@ -34,8 +34,9 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.uiTestJUnit4)
                 implementation(kotlin("test"))
-                implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.compose.ui.test.manifest)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.koin.test.junit4)
                 implementation(libs.mockk)
                 implementation(libs.turbine)
             }

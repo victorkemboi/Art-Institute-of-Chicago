@@ -16,6 +16,7 @@ import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.extensions.loadNetworkImage
 import mes.inc.aic.common.utils.NETWORK_IMAGE
+import mes.inc.aic.common.utils.NETWORK_IMAGE_LOADER
 
 @Composable
 fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
@@ -66,6 +67,6 @@ fun NetworkImage(link: String, description: String? = null) {
             )
         }
     } else {
-        CircularProgressIndicator(progress = 1f)
+        CircularProgressIndicator(progress = 1f, modifier = Modifier.testTag(NETWORK_IMAGE_LOADER))
     }
 }
