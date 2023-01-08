@@ -12,12 +12,16 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.data.repository.ArtworkRepository
 import mes.inc.aic.common.extensions.getKoinInstance
+import mes.inc.aic.common.utils.HOMES_SCREEN_ARTWORKS
+import mes.inc.aic.common.utils.HOMES_SCREEN_REEL
+import mes.inc.aic.common.utils.HOMES_SCREEN_REFRESH_BUTTON
 
 @Composable
 fun HomeScreenStateScope(
@@ -61,16 +65,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     ) { state ->
         Column(modifier = modifier.scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)) {
             state.value.reel?.let {
-                ReelComponent(reel = it, modifier = Modifier.fillMaxWidth())
+                ReelComponent(reel = it, modifier = Modifier.fillMaxWidth().testTag(HOMES_SCREEN_REEL))
             }
-            LazyVerticalGrid(columns = GridCells.Adaptive(100.dp)) {
+            LazyVerticalGrid(columns = GridCells.Adaptive(100.dp), modifier = Modifier.testTag(HOMES_SCREEN_ARTWORKS)) {
                 itemsIndexed(items = state.value.artworks) { _, item ->
                     ArtworkComponent(
                         artwork = item, modifier = Modifier
                     )
                 }
             }
-            Button(modifier = Modifier.fillMaxWidth(1f), onClick = { refreshState() }) {
+            Button(
+                modifier = Modifier.fillMaxWidth(1f).testTag(HOMES_SCREEN_REFRESH_BUTTON),
+                onClick = { refreshState() }) {
                 Text("Refresh")
             }
         }
