@@ -8,7 +8,7 @@ import org.koin.android.ext.koin.androidContext
 class ArtSpaceApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        initKoin(enableNetworkLogs = BuildConfig.DEBUG) {
+        initKoin(enableNetworkLogs = true) {
             androidContext(this@ArtSpaceApp.applicationContext)
         }
     }

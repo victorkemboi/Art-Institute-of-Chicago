@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.flow.collectLatest
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
@@ -41,7 +42,9 @@ fun HomeScreenStateScope(
     }
     LaunchedEffect(refreshArtwork) {
         if (refreshArtwork) {
+            Logger.i("Fetch artworks")
             artworkRepository.fetchArtworks().collectLatest { artworks ->
+                Logger.i("Fetch artworks resp: $artworks")
                 state.value = state.value.copy(artworks = artworks)
             }
         }

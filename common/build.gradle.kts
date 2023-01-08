@@ -53,6 +53,7 @@ kotlin {
                 api(libs.app.compat)
                 api(libs.androidx.core)
                 api(libs.glide.compose)
+                api(libs.ktor.client.okhttp)
                 implementation(libs.sqldelight.android.driver)
             }
         }

@@ -1,8 +1,10 @@
 package mes.inc.aic.common.data.model
 
+import kotlinx.serialization.Serializable
 import mes.inc.aic.common.extensions.generateRandomNumber
 import mes.inc.aic.common.extensions.generateUuid
 
+@Serializable
 data class Artwork(
     val localId: Long = 0,
     val serverId: String = generateUuid(),
@@ -37,7 +39,7 @@ data class Artwork(
             String?,
         ) -> Artwork =
             { localId, serverId, title, thumbnail, dateDisplay, artistId,
-                categoryTitles, styleTitle, updatedAt, origin, searchString ->
+              categoryTitles, styleTitle, updatedAt, origin, searchString ->
                 Artwork(
                     localId = localId,
                     serverId = serverId,

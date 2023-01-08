@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.database.ArtworkQueries
 
-internal class ArtworkDao(private val artworkQueries: ArtworkQueries) {
+class ArtworkDao(private val artworkQueries: ArtworkQueries) {
 
-    internal fun insert(artwork: Artwork) {
+    fun insert(artwork: Artwork) {
         artworkQueries.insertArtwork(
             localId = null,
             serverId = artwork.serverId,
@@ -22,6 +22,12 @@ internal class ArtworkDao(private val artworkQueries: ArtworkQueries) {
             origin = artwork.origin,
             searchString = artwork.searchString
         )
+    }
+
+    fun insert(artworks: List<Artwork>) {
+        artworks.forEach {
+            insert(it)
+        }
     }
 
     internal fun fetchArtworks(query: String? = null): Flow<List<Artwork>> {

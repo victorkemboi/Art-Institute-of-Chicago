@@ -2,9 +2,7 @@ package mes.inc.aic.common.ui.screens
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.flowOf
 import mes.inc.aic.common.data.model.Artwork
@@ -49,7 +47,7 @@ class HomeScreenTest {
 
     @Test
     fun artworksAreDisplayed() {
-        every { artworkRepository.fetchArtworks() } returns flowOf(listOf(Artwork(), Artwork()))
+        coEvery { artworkRepository.fetchArtworks() } returns flowOf(listOf(Artwork(), Artwork()))
         composeTestRule.setContent { HomeScreen() }
         composeTestRule
             .onNodeWithTag(HOMES_SCREEN_ARTWORKS)
@@ -71,7 +69,7 @@ class HomeScreenTest {
         composeTestRule
             .onNodeWithTag(HOMES_SCREEN_REFRESH_BUTTON)
             .performClick()
-        verify(exactly = 2) { artworkRepository.fetchArtworks() }
+        coVerify (exactly = 2) { artworkRepository.fetchArtworks() }
     }
 
     @Test
@@ -125,7 +123,7 @@ class HomeScreenStateScopeTest : KoinTest {
     @Test
     fun artworksStateUpdatedWhenRefreshed() {
         var artworks = listOf<Artwork>()
-        every { artworkRepository.fetchArtworks() } returns flowOf(listOf(Artwork()))
+        coEvery { artworkRepository.fetchArtworks() } returns flowOf(listOf(Artwork()))
         composeTestRule.setContent {
             HomeScreenStateScope(refreshArtwork = true) {
                 artworks = it.value.artworks
