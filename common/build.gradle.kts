@@ -32,6 +32,8 @@ kotlin {
                 api(libs.ktor.client.logging)
                 api(libs.ktor.content.negotiation)
                 api(libs.ktor.serialization.json)
+                api(libs.material)
+                api(libs.material3)
                 api(libs.sqldelight.coroutines.extension)
             }
             kotlin.srcDirs("build/generated/ksp/main/kotlin")

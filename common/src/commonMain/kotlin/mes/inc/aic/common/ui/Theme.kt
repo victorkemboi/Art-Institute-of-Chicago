@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,7 @@ private val darkColorPalette = darkColors(
     primaryVariant = PrimaryDark,
     secondary = PrimaryLight,
     onPrimary = White,
+    background = SpaceGray
 )
 
 private val lightColorPalette = lightColors(
@@ -57,14 +59,14 @@ fun ArtSpaceTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
     } else {
         lightColorPalette
     }
-
     MaterialTheme(
         colors = colors,
         content = {
             ProvideTextStyle(
                 value = TextStyle(color = MaterialTheme.colors.onPrimary),
-                content = content
+                content = { Surface(color = MaterialTheme.colors.background, content = content) }
             )
         }
     )
+
 }

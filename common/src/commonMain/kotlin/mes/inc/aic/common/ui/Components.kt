@@ -1,5 +1,6 @@
 package mes.inc.aic.common.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
@@ -39,14 +41,14 @@ fun ArtworkComponent(
     modifier: Modifier = Modifier,
     thumbnailModifier: Modifier = Modifier.width(150.dp).height(150.dp)
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(modifier = thumbnailModifier.background(Primary)) {
             artwork.thumbnail?.let { NetworkImage(it, description = artwork.title) }
         }
-        Box(modifier = Modifier.padding(top = Padding.Small)) {
-            Text(text = artwork.title, modifier = Modifier.align(Alignment.TopStart))
+        Column(modifier = Modifier.padding(top = Padding.Small)) {
+            Text(text = artwork.title)
             artwork.dateDisplay?.let {
-                Text(text = it, modifier = Modifier.align(Alignment.TopEnd))
+                Text(text = it)
             }
         }
     }
@@ -79,7 +81,22 @@ fun NetworkImage(
 
 @Composable
 fun Search(query: String = "", onQueryChanged: (String) -> Unit, modifier: Modifier = Modifier) {
-    Card(elevation = 4.dp, modifier = modifier.padding(all = 10.dp), shape = RoundedCornerShape(20.dp)) {
-        TextField(query, onValueChange = onQueryChanged)
+    Card(
+        elevation = 4.dp,
+        modifier = modifier.padding(all = 10.dp),
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colors.primaryVariant)
+    ) {
+        TextField(
+            query, onValueChange = onQueryChanged,
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.Gray,
+                disabledTextColor = Color.Transparent,
+                backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            )
+        )
     }
 }
