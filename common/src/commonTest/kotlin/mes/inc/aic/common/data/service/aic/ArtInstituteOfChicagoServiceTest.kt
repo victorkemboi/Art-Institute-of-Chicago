@@ -7,6 +7,9 @@ import io.ktor.client.engine.mock.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -14,9 +17,6 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import mes.inc.aic.common.data.cache.ArtworkDao
 import mes.inc.aic.common.data.cache.FakeArtworkDao
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ArtInstituteOfChicagoServiceTest {
@@ -73,7 +73,7 @@ class ArtInstituteOfChicagoServiceTest {
                                 "website_url": "https://www.artic.edu"
                             }
                         }
-                    """.trimIndent()
+                        """.trimIndent()
                     ),
                     status = HttpStatusCode.OK
                 )
@@ -86,5 +86,4 @@ class ArtInstituteOfChicagoServiceTest {
         val noOfArtworks = artworkDao.fetchArtworks().first().size
         assertEquals(1, noOfArtworks)
     }
-
 }

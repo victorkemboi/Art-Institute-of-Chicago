@@ -12,32 +12,36 @@ interface ArtworkDao {
     fun insert(artworks: List<Artwork>)
 
     fun fetchArtworks(query: String? = null): Flow<List<Artwork>>
+
+    suspend fun recordExists(title: String): Boolean
     fun removeAllArtworks()
 }
 
 class ArtworkDaoImpl(private val artworkQueries: ArtworkQueries) : ArtworkDao {
 
+    @Suppress("TooGenericExceptionCaught")
     override fun insert(artwork: Artwork) {
-        artworkQueries.insertArtwork(
-            localId = null,
-            serverId = artwork.serverId,
-            title = artwork.title,
-            thumbnail = artwork.thumbnail,
-            dateDisplay = artwork.dateDisplay,
-            artistId = artwork.artistId,
-            categoryTitles = artwork.categoryTitles.joinToString(separator = ","),
-            styleTitle = artwork.styleTitle,
-            updatedAt = artwork.updatedAt,
-            origin = artwork.origin,
-            searchString = artwork.searchString
-        )
+        try {
+            artworkQueries.insertArtwork(
+                localId = null,
+                serverId = artwork.serverId,
+                title = artwork.title,
+                thumbnail = artwork.thumbnail,
+                dateDisplay = artwork.dateDisplay,
+                artistId = artwork.artistId,
+                categoryTitles = artwork.categoryTitles.joinToString(separator = ","),
+                styleTitle = artwork.styleTitle,
+                updatedAt = artwork.updatedAt,
+                origin = artwork.origin,
+                searchString = artwork.searchString
+            )
+        } catch (e: Exception) {
+            Logger.i("Error inserting: $e")
+        }
     }
 
     override fun insert(artworks: List<Artwork>) {
-        artworks.forEach {
-            Logger.i("Response: saving artwork $it")
-            insert(it)
-        }
+        artworks.forEach { insert(it) }
     }
 
     override fun fetchArtworks(query: String?): Flow<List<Artwork>> {
@@ -46,6 +50,12 @@ class ArtworkDaoImpl(private val artworkQueries: ArtworkQueries) : ArtworkDao {
         } else {
             artworkQueries.selectAll(mapper = Artwork.mapper)
         }.asFlow().mapToList()
+    }
+
+    override suspend fun recordExists(title: String): Boolean {
+        val exists = artworkQueries.recordExists(title).executeAsOne()
+        Logger.i("Record exists: $exists")
+        return exists == 1L
     }
 
     override fun removeAllArtworks() {

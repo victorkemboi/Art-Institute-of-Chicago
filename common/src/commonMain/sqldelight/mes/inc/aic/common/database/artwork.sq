@@ -1,7 +1,7 @@
 CREATE TABLE Artwork(
 localId INTEGER PRIMARY KEY AUTOINCREMENT,
 serverId TEXT NOT NULL,
-title TEXT NOT NULL,
+title TEXT NOT NULL UNIQUE,
 thumbnail TEXT,
 dateDisplay TEXT,
 artistId TEXT,
@@ -13,7 +13,7 @@ searchString TEXT
 );
 
 insertArtwork:
-INSERT INTO Artwork(localId, serverId, title, thumbnail, dateDisplay, artistId, categoryTitles, styleTitle, updatedAt, origin, searchString)
+INSERT OR REPLACE INTO Artwork(localId, serverId, title, thumbnail, dateDisplay, artistId, categoryTitles, styleTitle, updatedAt, origin, searchString)
 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);
 
 removeAllArtworks:
@@ -24,3 +24,6 @@ SELECT Artwork.* FROM Artwork;
 
 search:
 SELECT * FROM Artwork  WHERE searchString LIKE (:query);
+
+recordExists:
+SELECT COUNT(1) FROM Artwork  WHERE title=:query;

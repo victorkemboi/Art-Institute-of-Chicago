@@ -5,14 +5,14 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import io.mockk.*
 import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.flowOf
+import mes.inc.aic.common.constants.HOMES_SCREEN_ARTWORKS
+import mes.inc.aic.common.constants.HOMES_SCREEN_REEL
+import mes.inc.aic.common.constants.HOMES_SCREEN_REFRESH_BUTTON
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.data.repository.ArtworkRepository
 import mes.inc.aic.common.ui.HomeScreen
 import mes.inc.aic.common.ui.HomeScreenStateScope
-import mes.inc.aic.common.constants.HOMES_SCREEN_ARTWORKS
-import mes.inc.aic.common.constants.HOMES_SCREEN_REEL
-import mes.inc.aic.common.constants.HOMES_SCREEN_REFRESH_BUTTON
 import org.junit.Rule
 import org.junit.Test
 import org.koin.dsl.module
@@ -69,7 +69,7 @@ class HomeScreenTest {
         composeTestRule
             .onNodeWithTag(HOMES_SCREEN_REFRESH_BUTTON)
             .performClick()
-        coVerify (exactly = 2) { artworkRepository.fetchArtworks() }
+        coVerify(exactly = 2) { artworkRepository.fetchArtworks() }
     }
 
     @Test
@@ -98,25 +98,25 @@ class HomeScreenStateScopeTest : KoinTest {
 
     @Test
     fun reelsDoRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refreshReels = true) }
+        composeTestRule.setContent { HomeScreenStateScope(refresh = true) }
         verify(exactly = 1) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun reelsDoeNotRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refreshReels = false) }
+        composeTestRule.setContent { HomeScreenStateScope(refresh = false) }
         verify(exactly = 0) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun artworksDoRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refreshArtwork = true) }
+        composeTestRule.setContent { HomeScreenStateScope(refresh = true) }
         verify(exactly = 1) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun artworksDoeNotRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refreshArtwork = false) }
+        composeTestRule.setContent { HomeScreenStateScope(refresh = false) }
         verify(exactly = 0) { artworkRepository.fetchArtworkReels() }
     }
 
@@ -125,7 +125,7 @@ class HomeScreenStateScopeTest : KoinTest {
         var artworks = listOf<Artwork>()
         coEvery { artworkRepository.fetchArtworks() } returns flowOf(listOf(Artwork()))
         composeTestRule.setContent {
-            HomeScreenStateScope(refreshArtwork = true) {
+            HomeScreenStateScope(refresh = true) {
                 artworks = it.value.artworks
             }
         }
@@ -138,7 +138,7 @@ class HomeScreenStateScopeTest : KoinTest {
         var reel: Reel? = null
         every { artworkRepository.fetchArtworkReels() } returns flowOf(listOf(expectedReel))
         composeTestRule.setContent {
-            HomeScreenStateScope(refreshReels = true) {
+            HomeScreenStateScope(refresh = true) {
                 reel = it.value.reel
             }
         }

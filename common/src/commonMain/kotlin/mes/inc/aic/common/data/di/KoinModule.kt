@@ -30,7 +30,7 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 fun repositoryModule() = module {
-    single<ArtworkRepository> { ArtworkRepositoryImpl(get(), get(), get()) }
+    single<ArtworkRepository> { ArtworkRepositoryImpl(get(), get()) }
 }
 
 fun serviceModule() = module {
@@ -38,7 +38,7 @@ fun serviceModule() = module {
 }
 
 fun databaseModule() = module {
-    single <ArtworkDao>{ ArtworkDaoImpl(get<ArtSpaceDatabase>().artworkQueries) }
+    single<ArtworkDao> { ArtworkDaoImpl(get<ArtSpaceDatabase>().artworkQueries) }
 }
 
 @OptIn(ExperimentalSerializationApi::class)

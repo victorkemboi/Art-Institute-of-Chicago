@@ -1,15 +1,12 @@
 package mes.inc.aic.common.data.cache
 
 import app.cash.turbine.test
-import io.mockk.mockk
-import io.mockk.verify
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
 import mes.inc.aic.common.data.model.Artwork
-import mes.inc.aic.common.database.ArtworkQueries
-import kotlin.test.assertEquals
 
 class FakeArtworkDao : ArtworkDao {
     private val artworkState = MutableStateFlow((listOf<Artwork>()))
@@ -28,6 +25,9 @@ class FakeArtworkDao : ArtworkDao {
             artworkState.map { it.filter { artwork -> artwork.searchString?.contains(query) == true } }
         }
 
+    override suspend fun recordExists(title: String): Boolean =
+        artworkState.value.filter { it.title == title }.isNotEmpty()
+
     override fun removeAllArtworks() {
         artworkState.update { emptyList() }
     }
@@ -35,7 +35,6 @@ class FakeArtworkDao : ArtworkDao {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ArtworkDaoTest {
-    private val artworkQueries: ArtworkQueries = mockk(relaxed = true)
     private val artworkDao: ArtworkDao = FakeArtworkDao()
     private val artworkCategories = listOf("Painting", "Sculpture", "Architecture")
 

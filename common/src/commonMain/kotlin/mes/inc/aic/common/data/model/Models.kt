@@ -10,9 +10,9 @@ data class Artwork(
     val serverId: String = generateUuid(),
     val title: String = "Artwork ${generateRandomNumber()}",
     val thumbnail: String? = null,
-    val dateDisplay: String? = "Dark Ages",
+    val dateDisplay: String? = "Unknown",
     val artistId: String? = null,
-    val categoryTitles: List<String> = listOf("Painting"),
+    val categoryTitles: List<String> = listOf("Unknown"),
     val styleTitle: String? = null,
     val updatedAt: String? = null,
     val origin: String? = "Art institute of Chicago",
@@ -39,7 +39,7 @@ data class Artwork(
             String?,
         ) -> Artwork =
             { localId, serverId, title, thumbnail, dateDisplay, artistId,
-              categoryTitles, styleTitle, updatedAt, origin, searchString ->
+                categoryTitles, styleTitle, updatedAt, origin, searchString ->
                 Artwork(
                     localId = localId,
                     serverId = serverId,

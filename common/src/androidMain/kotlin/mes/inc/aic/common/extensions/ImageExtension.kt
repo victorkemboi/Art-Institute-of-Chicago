@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
+@Suppress("TooGenericExceptionCaught")
 actual suspend fun loadNetworkImage(link: String, dispatcher: CoroutineDispatcher): ImageBitmap? =
     withContext(dispatcher) {
         val context: Context = getKoinInstance()
