@@ -4,6 +4,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -35,8 +36,7 @@ fun HomeScreenStateScope(
 
     LaunchedEffect(artworks.value, reels.value) {
         state.value = state.value.copy(
-            artworks = artworks.value,
-            reel = reels.value.firstOrNull()
+            artworks = artworks.value, reel = reels.value.firstOrNull()
         )
     }
     LaunchedEffect(currentState.searchQuery, currentState.refresh) {
@@ -48,13 +48,27 @@ fun HomeScreenStateScope(
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     var refresh by remember { mutableStateOf(true) }
+    var query by remember { mutableStateOf("") }
+    HomeScreenStateScope(
 
-    HomeScreenStateScope { state ->
-        Column(modifier = modifier.scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)) {
+    ) { state ->
+        Column(
+            modifier = modifier.scrollable(
+                state = rememberScrollState(), orientation = Orientation.Vertical
+            ).padding(start = Padding.Normal, end = Padding.Normal)
+        ) {
             state.value.reel?.let {
                 ReelComponent(reel = it, modifier = Modifier.fillMaxWidth().testTag(HOMES_SCREEN_REEL))
             }
-            LazyVerticalGrid(columns = GridCells.Adaptive(150.dp), modifier = Modifier.testTag(HOMES_SCREEN_ARTWORKS)) {
+            Search(
+                query = query,
+                onQueryChanged = { query = it },
+                modifier = Modifier.fillMaxWidth().padding(top = Padding.Small)
+            )
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(150.dp),
+                modifier = Modifier.testTag(HOMES_SCREEN_ARTWORKS).padding(top = Padding.Medium)
+            ) {
                 items(state.value.artworks) { artwork ->
                     ArtworkComponent(
                         artwork = artwork, modifier = Modifier
