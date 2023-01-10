@@ -13,8 +13,13 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.observer.*
 import io.ktor.network.tls.CIOCipherSuites
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import mes.inc.aic.common.data.cache.ArtworkDao
+import mes.inc.aic.common.data.cache.ArtworkDaoImpl
 import mes.inc.aic.common.data.repository.ArtworkRepository
 import mes.inc.aic.common.data.repository.ArtworkRepositoryImpl
 import mes.inc.aic.common.data.service.aic.ArtInstituteOfChicagoService
@@ -25,7 +30,7 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 fun repositoryModule() = module {
-    single<ArtworkRepository> { ArtworkRepositoryImpl(get(), get()) }
+    single<ArtworkRepository> { ArtworkRepositoryImpl(get(), get(), get()) }
 }
 
 fun serviceModule() = module {
@@ -33,9 +38,10 @@ fun serviceModule() = module {
 }
 
 fun databaseModule() = module {
-    single { ArtworkDao(get<ArtSpaceDatabase>().artworkQueries) }
+    single <ArtworkDao>{ ArtworkDaoImpl(get<ArtSpaceDatabase>().artworkQueries) }
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 fun networkModule(enableNetworkLogs: Boolean = false) = module {
     val client = HttpClient(CIO) {
         engine {
@@ -53,6 +59,8 @@ fun networkModule(enableNetworkLogs: Boolean = false) = module {
             json(Json {
                 prettyPrint = true
                 isLenient = true
+                ignoreUnknownKeys = true
+                explicitNulls = false
             })
         }
         if (enableNetworkLogs) {
@@ -68,7 +76,8 @@ fun networkModule(enableNetworkLogs: Boolean = false) = module {
             }
         }
     }
-    single { httpClient }
+    single { client }
+    single { CoroutineScope(Dispatchers.IO + SupervisorJob()) }
 }
 
 expect val httpClient: HttpClient

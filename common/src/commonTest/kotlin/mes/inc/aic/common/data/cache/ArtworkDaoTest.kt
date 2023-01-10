@@ -1,22 +1,46 @@
 package mes.inc.aic.common.data.cache
 
+import app.cash.turbine.test
 import io.mockk.mockk
 import io.mockk.verify
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.database.ArtworkQueries
+import kotlin.test.assertEquals
+
+class FakeArtworkDao : ArtworkDao {
+    private val artworkState = MutableStateFlow((listOf<Artwork>()))
+    override fun insert(artwork: Artwork) {
+        artworkState.update { it.toMutableList().apply { add(artwork) } }
+    }
+
+    override fun insert(artworks: List<Artwork>) {
+        artworks.forEach { insert(it) }
+    }
+
+    override fun fetchArtworks(query: String?): Flow<List<Artwork>> =
+        if (query == null) {
+            artworkState
+        } else {
+            artworkState.map { it.filter { artwork -> artwork.searchString?.contains(query) == true } }
+        }
+
+    override fun removeAllArtworks() {
+        artworkState.update { emptyList() }
+    }
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ArtworkDaoTest {
     private val artworkQueries: ArtworkQueries = mockk(relaxed = true)
-    private val artworkDao: ArtworkDao = ArtworkDao(artworkQueries)
+    private val artworkDao: ArtworkDao = FakeArtworkDao()
     private val artworkCategories = listOf("Painting", "Sculpture", "Architecture")
 
     @Test
-    fun insertingArtworkIsCalled() {
+    fun artworkInserted() = runTest {
         val localId = 4L
         val title = "Art 101"
         val artwork = Artwork(
@@ -25,33 +49,24 @@ class ArtworkDaoTest {
             categoryTitles = artworkCategories
         )
         artworkDao.insert(artwork)
-        verify(exactly = 1) {
-            artworkQueries.insertArtwork(
-                localId = null,
-                serverId = artwork.serverId,
-                title = artwork.title,
-                thumbnail = artwork.thumbnail,
-                dateDisplay = artwork.dateDisplay,
-                artistId = artwork.artistId,
-                categoryTitles = "Painting,Sculpture,Architecture",
-                styleTitle = artwork.styleTitle,
-                updatedAt = artwork.updatedAt,
-                origin = artwork.origin,
-                searchString = artwork.searchString
-            )
+        assertEquals(1, artworkDao.fetchArtworks().first().size)
+    }
+
+    @Test
+    fun artworkUpdatesAreEmitted() = runTest {
+        artworkDao.fetchArtworks(null).test {
+            assertEquals(0, awaitItem().size)
+            artworkDao.insert(Artwork())
+            assertEquals(1, awaitItem().size)
+            awaitComplete()
         }
     }
 
     @Test
-    fun fetchingArtworksWithoutQueryIsCalled() = runTest {
-        artworkDao.fetchArtworks(null).first()
-        verify(exactly = 1) { artworkQueries.selectAll(mapper = Artwork.mapper) }
-    }
-
-    @Test
-    fun fetchingArtworksWithQueryIsCalled() = runTest {
+    fun fetchingArtworksWithQuery() = runTest {
         val query = "Query"
-        artworkDao.fetchArtworks(query).first()
-        verify(exactly = 1) { artworkQueries.search(query = "%$query%", mapper = Artwork.mapper) }
+        artworkDao.insert(listOf(Artwork(title = query), Artwork(), Artwork()))
+        val artworksSize = artworkDao.fetchArtworks(query).first().size
+        assertEquals(1, artworksSize)
     }
 }

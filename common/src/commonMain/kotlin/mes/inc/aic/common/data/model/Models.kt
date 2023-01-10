@@ -6,7 +6,7 @@ import mes.inc.aic.common.extensions.generateUuid
 
 @Serializable
 data class Artwork(
-    val localId: Long = 0,
+    val localId: Long? = null,
     val serverId: String = generateUuid(),
     val title: String = "Artwork ${generateRandomNumber()}",
     val thumbnail: String? = null,

@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.ui.ArtworkComponent
-import mes.inc.aic.common.utils.NETWORK_IMAGE
+import mes.inc.aic.common.constants.NETWORK_IMAGE
 import org.junit.Rule
 import org.junit.Test
 

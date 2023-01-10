@@ -44,6 +44,7 @@ kotlin {
                 implementation(libs.compose.ui.test.manifest)
                 implementation(libs.coroutines.test)
                 implementation(libs.koin.test.junit4)
+                implementation(libs.ktor.client.mock)
                 implementation(libs.mockk)
                 implementation(libs.turbine)
             }

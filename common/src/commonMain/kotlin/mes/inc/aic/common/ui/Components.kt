@@ -10,18 +10,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.extensions.loadNetworkImage
-import mes.inc.aic.common.utils.NETWORK_IMAGE
-import mes.inc.aic.common.utils.NETWORK_IMAGE_LOADER
+import mes.inc.aic.common.constants.NETWORK_IMAGE
+import mes.inc.aic.common.constants.NETWORK_IMAGE_LOADER
 
 @Composable
 fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
     Box(modifier = modifier.background(Primary).heightIn(min = 300.dp)) {
-        reel.thumbnail?.let { NetworkImage(it, reel.title) }
+        reel.thumbnail?.let { NetworkImage(it, description = reel.title) }
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -37,11 +38,11 @@ fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
 fun ArtworkComponent(
     artwork: Artwork,
     modifier: Modifier = Modifier,
-    thumbnailModifier: Modifier = Modifier.width(100.dp).height(100.dp)
+    thumbnailModifier: Modifier = Modifier.width(150.dp).height(150.dp)
 ) {
     Column(modifier = modifier) {
         Box(modifier = thumbnailModifier.background(Primary)) {
-            artwork.thumbnail?.let { NetworkImage(it, artwork.title) }
+            artwork.thumbnail?.let { NetworkImage(it, description = artwork.title) }
         }
         Box(modifier = Modifier.padding(top = Padding.Small)) {
             Text(text = artwork.title, modifier = Modifier.align(Alignment.TopStart))
@@ -53,7 +54,12 @@ fun ArtworkComponent(
 }
 
 @Composable
-fun NetworkImage(link: String, description: String? = null) {
+fun NetworkImage(
+    link: String,
+    modifier: Modifier = Modifier,
+    description: String? = null,
+    contentScale: ContentScale = ContentScale.FillBounds
+) {
     var image by remember { mutableStateOf<ImageBitmap?>(null) }
     LaunchedEffect(link) {
         image = loadNetworkImage(link)
@@ -63,7 +69,8 @@ fun NetworkImage(link: String, description: String? = null) {
             Image(
                 bitmap = it,
                 contentDescription = description,
-                modifier = Modifier.testTag(NETWORK_IMAGE)
+                modifier = modifier.testTag(NETWORK_IMAGE),
+                contentScale = contentScale
             )
         }
     } else {

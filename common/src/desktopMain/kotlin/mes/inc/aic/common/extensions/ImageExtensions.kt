@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.jetbrains.skia.Image
 
-actual suspend fun loadNetworkImage(link: String, dispatcher: CoroutineDispatcher): ImageBitmap =
+actual suspend fun loadNetworkImage(link: String, dispatcher: CoroutineDispatcher): ImageBitmap? =
     withContext(dispatcher) {
         val url = URL(link)
         val connection = url.openConnection() as HttpURLConnection

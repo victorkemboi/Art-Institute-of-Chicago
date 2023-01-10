@@ -10,9 +10,9 @@ import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.data.repository.ArtworkRepository
 import mes.inc.aic.common.ui.HomeScreen
 import mes.inc.aic.common.ui.HomeScreenStateScope
-import mes.inc.aic.common.utils.HOMES_SCREEN_ARTWORKS
-import mes.inc.aic.common.utils.HOMES_SCREEN_REEL
-import mes.inc.aic.common.utils.HOMES_SCREEN_REFRESH_BUTTON
+import mes.inc.aic.common.constants.HOMES_SCREEN_ARTWORKS
+import mes.inc.aic.common.constants.HOMES_SCREEN_REEL
+import mes.inc.aic.common.constants.HOMES_SCREEN_REFRESH_BUTTON
 import org.junit.Rule
 import org.junit.Test
 import org.koin.dsl.module
