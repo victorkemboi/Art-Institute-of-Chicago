@@ -9,10 +9,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlin.time.Duration
 import kotlinx.coroutines.delay
@@ -72,30 +75,52 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 onQueryChanged = { query = it },
                 modifier = Modifier.fillMaxWidth().padding(top = Padding.Small)
             )
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(150.dp),
-                modifier = Modifier.testTag(HOMES_SCREEN_ARTWORKS).padding(top = Padding.Medium),
-                contentPadding = PaddingValues(horizontal = Padding.Medium),
-            ) {
-                if (query.isEmpty()) {
-                    item(span = { GridItemSpan(currentLineSpan = Int.MAX_VALUE) }) {
-                        state.value.reel?.let {
-                            ReelComponent(reel = it, modifier = Modifier.fillMaxWidth().testTag(HOMES_SCREEN_REEL))
-                        }
-                    }
-                }
-                items(state.value.artworks) { artwork ->
-                    ArtworkComponent(
-                        artwork = artwork, modifier = Modifier.padding(top = Padding.Medium)
-                    )
-                }
-            }
+            HomeScreenContent(
+                reel = state.value.reel,
+                showReel = query.isEmpty(),
+                artworks = state.value.artworks
+            )
         }
     }
 
     LaunchedEffect(refresh) {
         if (refresh) {
             refresh = false
+        }
+    }
+}
+
+@Composable
+fun HomeScreenContent(
+    reel: Reel? = null,
+    showReel: Boolean = false,
+    artworks: List<Artwork> = emptyList()
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(150.dp),
+        modifier = Modifier.testTag(HOMES_SCREEN_ARTWORKS).padding(top = Padding.Medium),
+        contentPadding = PaddingValues(horizontal = Padding.Medium),
+    ) {
+        if (showReel) {
+            item(span = { GridItemSpan(currentLineSpan = Int.MAX_VALUE) }) {
+                reel?.let {
+                    ReelComponent(reel = it, modifier = Modifier.fillMaxWidth().testTag(HOMES_SCREEN_REEL))
+                }
+            }
+        }
+        items(artworks) { artwork ->
+            ArtworkComponent(
+                artwork = artwork, modifier = Modifier.padding(top = Padding.Medium)
+            )
+        }
+        if (artworks.isEmpty()) {
+            item {
+                Text(
+                    text = "No artworks available.",
+                    modifier = Modifier.fillMaxWidth(),
+                    style = TextStyle(textAlign = TextAlign.Center)
+                )
+            }
         }
     }
 }

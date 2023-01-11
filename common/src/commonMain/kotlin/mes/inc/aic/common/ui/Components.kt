@@ -37,7 +37,7 @@ fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
                     NetworkImage(
                         link = it,
                         description = reel.title,
-                        modifier = Modifier.heightIn(min = 300.dp).height(IntrinsicSize.Max)
+                        modifier = Modifier.heightIn(min = 300.dp).height(IntrinsicSize.Max).fillMaxWidth()
                     )
                 }
             }
