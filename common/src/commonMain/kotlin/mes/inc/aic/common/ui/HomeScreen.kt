@@ -104,7 +104,11 @@ fun HomeScreenContent(
         if (showReel) {
             item(span = { GridItemSpan(currentLineSpan = Int.MAX_VALUE) }) {
                 reel?.let {
-                    ReelComponent(reel = it, modifier = Modifier.fillMaxWidth().testTag(HOMES_SCREEN_REEL))
+                    ReelComponent(
+                        reel = it, modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag(HOMES_SCREEN_REEL)
+                    )
                 }
             }
         }
@@ -125,6 +129,7 @@ fun HomeScreenContent(
     }
 }
 
+@Stable
 data class HomeScreenState(
     val refresh: Boolean = false,
     val searchQuery: String? = null,

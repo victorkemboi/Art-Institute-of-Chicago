@@ -52,7 +52,7 @@ fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
                     NetworkImage(
                         link = it,
                         description = reel.title,
-                        modifier = Modifier.weight(0.75f).fillMaxWidth().fillMaxHeight()
+                        modifier = Modifier.weight(0.75f).fillMaxWidth().heightIn(max = 500.dp)
                     )
                 }
             }
