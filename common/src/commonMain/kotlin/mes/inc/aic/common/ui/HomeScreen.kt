@@ -4,15 +4,17 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
+import kotlin.time.Duration
 import kotlinx.coroutines.delay
 import mes.inc.aic.common.constants.HOMES_SCREEN_ARTWORKS
 import mes.inc.aic.common.constants.HOMES_SCREEN_REEL
@@ -20,6 +22,8 @@ import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
 import mes.inc.aic.common.data.repository.ArtworkRepository
 import mes.inc.aic.common.extensions.getKoinInstance
+
+expect val refreshReelTime: Duration
 
 @Composable
 fun HomeScreenStateScope(
@@ -30,22 +34,19 @@ fun HomeScreenStateScope(
 ) {
     val state = remember { mutableStateOf(HomeScreenState()) }
     val artworks = artworkRepository.fetchArtworks(query).collectAsState(emptyList())
-    var fetchReels by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            val reel = artworkRepository.fetchArtworkReels()
+            state.value = state.value.copy(reel = reel)
+            delay(refreshReelTime)
+        }
+    }
 
     LaunchedEffect(artworks.value) {
         state.value = state.value.copy(artworks = artworks.value)
     }
-    LaunchedEffect(fetchReels) {
-        Logger.i("Fetch reels: $fetchReels")
-        if (fetchReels) {
-            val reel = artworkRepository.fetchArtworkReels()
-            Logger.i("Reel: $reel")
-            state.value = state.value.copy(reel = reel)
-            fetchReels = false
-            delay(5000)
-            fetchReels = true
-        }
-    }
+
     LaunchedEffect(query, refresh) {
         artworkRepository.syncArtworks(query.ifEmpty { null })
     }
@@ -71,17 +72,21 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 onQueryChanged = { query = it },
                 modifier = Modifier.fillMaxWidth().padding(top = Padding.Small)
             )
-            state.value.reel?.let {
-                ReelComponent(reel = it, modifier = Modifier.fillMaxWidth().testTag(HOMES_SCREEN_REEL))
-            }
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(150.dp),
                 modifier = Modifier.testTag(HOMES_SCREEN_ARTWORKS).padding(top = Padding.Medium),
-                contentPadding = PaddingValues(horizontal = Padding.Medium)
+                contentPadding = PaddingValues(horizontal = Padding.Medium),
             ) {
+                if (query.isEmpty()) {
+                    item(span = { GridItemSpan(currentLineSpan = Int.MAX_VALUE) }) {
+                        state.value.reel?.let {
+                            ReelComponent(reel = it, modifier = Modifier.fillMaxWidth().testTag(HOMES_SCREEN_REEL))
+                        }
+                    }
+                }
                 items(state.value.artworks) { artwork ->
                     ArtworkComponent(
-                        artwork = artwork, modifier = Modifier.padding(top = Padding.Small)
+                        artwork = artwork, modifier = Modifier.padding(top = Padding.Medium)
                     )
                 }
             }

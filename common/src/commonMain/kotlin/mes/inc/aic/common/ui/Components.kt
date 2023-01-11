@@ -26,22 +26,57 @@ import mes.inc.aic.common.extensions.loadNetworkImage
 
 @Composable
 fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.background(Primary).heightIn(min = 300.dp).height(IntrinsicSize.Max)) {
-        reel.thumbnail?.let {
-            NetworkImage(
-                link = it,
-                description = reel.title,
-                modifier = Modifier.fillMaxWidth().fillMaxHeight()
-            )
+    BoxWithConstraints {
+        if (maxWidth < 400.dp) {
+            Column(modifier = modifier.fillMaxWidth()) {
+                ReelDetails(
+                    title = reel.title,
+                    description = reel.description,
+                )
+                reel.thumbnail?.let {
+                    NetworkImage(
+                        link = it,
+                        description = reel.title,
+                        modifier = Modifier.heightIn(min = 300.dp).height(IntrinsicSize.Max)
+                    )
+                }
+            }
+        } else {
+            Row {
+                ReelDetails(
+                    title = reel.title,
+                    description = reel.description,
+                    modifier = Modifier.align(Alignment.Top).weight(0.25f)
+                )
+                reel.thumbnail?.let {
+                    NetworkImage(
+                        link = it,
+                        description = reel.title,
+                        modifier = Modifier.weight(0.75f).fillMaxWidth().fillMaxHeight()
+                    )
+                }
+            }
         }
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(start = Padding.Medium, bottom = Padding.Medium)
-        ) {
-            Text(text = reel.title, style = MaterialTheme.typography.h4)
-            Text(text = reel.description, style = MaterialTheme.typography.subtitle1)
-        }
+    }
+}
+
+@Composable
+fun ReelDetails(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier.padding(start = Padding.Medium, bottom = Padding.Medium)
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.h4,
+        )
+        Text(
+            text = description,
+            style = MaterialTheme.typography.subtitle1
+        )
     }
 }
 
@@ -75,7 +110,7 @@ fun NetworkImage(
     link: String,
     modifier: Modifier = Modifier,
     description: String? = null,
-    contentScale: ContentScale = ContentScale.FillBounds
+    contentScale: ContentScale = ContentScale.Crop
 ) {
     var image by remember { mutableStateOf<ImageBitmap?>(null) }
     LaunchedEffect(link) {

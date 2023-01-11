@@ -20,6 +20,7 @@ data class Artwork(
 ) {
     fun toReel() = Reel(
         title = title,
+        description = dateDisplay ?: styleTitle ?: categoryTitles.firstOrNull() ?: "",
         thumbnail = thumbnail,
         type = Reel.ReelType.Artwork(this)
     )

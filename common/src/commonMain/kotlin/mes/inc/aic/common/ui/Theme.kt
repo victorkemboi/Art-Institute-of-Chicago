@@ -4,7 +4,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Magenta
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
@@ -12,6 +16,10 @@ val Primary = Color(0xFFB50938)
 val PrimaryDark = Color(0xFF7E0F2E)
 val PrimaryLight = Color(0xFFE18371)
 val SpaceGray = Color(0xFF2E3538)
+
+val Colors = listOf(Primary, PrimaryLight, Magenta, Green, Blue, Yellow)
+
+fun randomColor() = Colors[(Colors.indices).random()]
 
 private val darkColorPalette = darkColors(
     primary = Primary,
