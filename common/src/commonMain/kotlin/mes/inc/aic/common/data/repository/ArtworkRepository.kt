@@ -1,7 +1,7 @@
 package mes.inc.aic.common.data.repository
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import mes.inc.aic.common.data.cache.ArtworkDao
 import mes.inc.aic.common.data.model.Artwork
 import mes.inc.aic.common.data.model.Reel
@@ -10,7 +10,7 @@ import mes.inc.aic.common.data.service.aic.ArtInstituteOfChicagoService
 interface ArtworkRepository {
     fun syncArtworks(query: String? = null)
     fun fetchArtworks(query: String? = null): Flow<List<Artwork>>
-    fun fetchArtworkReels(): Flow<List<Reel>>
+    suspend fun fetchArtworkReels(): Reel?
 }
 
 class ArtworkRepositoryImpl(
@@ -25,5 +25,16 @@ class ArtworkRepositoryImpl(
         return artworkDao.fetchArtworks(query)
     }
 
-    override fun fetchArtworkReels(): Flow<List<Reel>> = flowOf(emptyList())
+    override suspend fun fetchArtworkReels(): Reel? {
+        return artworkDao.fetchArtworks()
+            .map {
+                if (it.isNotEmpty()) {
+                    val random = it.indices.random()
+                    it[random].toReel()
+                } else {
+                    null
+                }
+            }
+            .firstOrNull()
+    }
 }

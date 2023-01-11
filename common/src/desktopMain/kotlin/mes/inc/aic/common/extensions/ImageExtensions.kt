@@ -11,6 +11,7 @@ import javax.imageio.ImageIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.jetbrains.skia.Image
+import java.net.SocketException
 
 actual suspend fun loadNetworkImage(link: String, dispatcher: CoroutineDispatcher): ImageBitmap? =
     withContext(dispatcher) {
@@ -28,6 +29,9 @@ actual suspend fun loadNetworkImage(link: String, dispatcher: CoroutineDispatche
 
             return@withContext Image.makeFromEncoded(byteArray).toComposeImageBitmap()
         } catch (e: FileNotFoundException) {
+            Logger.i("Error loading image: $e")
+            null
+        } catch (e: SocketException) {
             Logger.i("Error loading image: $e")
             null
         }

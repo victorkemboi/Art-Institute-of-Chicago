@@ -26,8 +26,14 @@ import mes.inc.aic.common.extensions.loadNetworkImage
 
 @Composable
 fun ReelComponent(reel: Reel, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.background(Primary).heightIn(min = 300.dp)) {
-        reel.thumbnail?.let { NetworkImage(it, description = reel.title) }
+    Box(modifier = modifier.background(Primary).heightIn(min = 300.dp).height(IntrinsicSize.Max)) {
+        reel.thumbnail?.let {
+            NetworkImage(
+                link = it,
+                description = reel.title,
+                modifier = Modifier.fillMaxWidth().fillMaxHeight()
+            )
+        }
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -46,8 +52,14 @@ fun ArtworkComponent(
     thumbnailModifier: Modifier = Modifier.width(150.dp).height(150.dp)
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(modifier = thumbnailModifier.background(Primary)) {
-            artwork.thumbnail?.let { NetworkImage(it, description = artwork.title) }
+        Box(modifier = thumbnailModifier.background(Primary).height(IntrinsicSize.Max)) {
+            artwork.thumbnail?.let {
+                NetworkImage(
+                    link = it,
+                    description = artwork.title,
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
         }
         Column(modifier = Modifier.padding(top = Padding.Small)) {
             Text(text = artwork.title)
