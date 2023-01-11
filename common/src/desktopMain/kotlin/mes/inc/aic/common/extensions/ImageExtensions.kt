@@ -6,12 +6,12 @@ import co.touchlab.kermit.Logger
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.net.HttpURLConnection
+import java.net.SocketException
 import java.net.URL
 import javax.imageio.ImageIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.jetbrains.skia.Image
-import java.net.SocketException
 
 actual suspend fun loadNetworkImage(link: String, dispatcher: CoroutineDispatcher): ImageBitmap? =
     withContext(dispatcher) {

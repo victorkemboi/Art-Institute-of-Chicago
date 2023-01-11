@@ -34,7 +34,7 @@ class HomeScreenTest {
 
     @Test
     fun reelIsDisplayed() {
-        every { artworkRepository.fetchArtworkReels() } returns flowOf(listOf(Reel()))
+        coEvery { artworkRepository.fetchArtworkReels() } returns Reel()
         composeTestRule.setContent { HomeScreen() }
         composeTestRule.onNodeWithTag(HOMES_SCREEN_REEL).assertIsDisplayed()
     }
@@ -78,7 +78,7 @@ class HomeScreenTest {
         composeTestRule
             .onNodeWithTag(HOMES_SCREEN_REFRESH_BUTTON)
             .performClick()
-        verify(exactly = 2) { artworkRepository.fetchArtworkReels() }
+        coVerify(exactly = 2) { artworkRepository.fetchArtworkReels() }
     }
 }
 
@@ -99,25 +99,25 @@ class HomeScreenStateScopeTest : KoinTest {
     @Test
     fun reelsDoRefresh() {
         composeTestRule.setContent { HomeScreenStateScope(refresh = true) }
-        verify(exactly = 1) { artworkRepository.fetchArtworkReels() }
+        coVerify(exactly = 1) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun reelsDoeNotRefresh() {
         composeTestRule.setContent { HomeScreenStateScope(refresh = false) }
-        verify(exactly = 0) { artworkRepository.fetchArtworkReels() }
+        coVerify(exactly = 0) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun artworksDoRefresh() {
         composeTestRule.setContent { HomeScreenStateScope(refresh = true) }
-        verify(exactly = 1) { artworkRepository.fetchArtworkReels() }
+        coVerify(exactly = 1) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun artworksDoeNotRefresh() {
         composeTestRule.setContent { HomeScreenStateScope(refresh = false) }
-        verify(exactly = 0) { artworkRepository.fetchArtworkReels() }
+        coVerify(exactly = 0) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
@@ -136,7 +136,7 @@ class HomeScreenStateScopeTest : KoinTest {
     fun reelsStateUpdatedWhenRefreshed() {
         val expectedReel = Reel()
         var reel: Reel? = null
-        every { artworkRepository.fetchArtworkReels() } returns flowOf(listOf(expectedReel))
+        coEvery { artworkRepository.fetchArtworkReels() } returns expectedReel
         composeTestRule.setContent {
             HomeScreenStateScope(refresh = true) {
                 reel = it.value.reel

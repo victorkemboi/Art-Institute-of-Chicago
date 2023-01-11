@@ -1,8 +1,11 @@
 package mes.inc.aic.common.ui.components
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import mes.inc.aic.common.constants.NETWORK_IMAGE
 import mes.inc.aic.common.ui.ReelComponent
 import org.junit.Rule
 import org.junit.Test
@@ -34,7 +37,7 @@ class ReelComponentTest {
     @Test
     fun thumbnailNotDisplayed() {
         composeTestRule.setContent { ReelComponent(reel.copy(thumbnail = null)) }
-        composeTestRule.onNodeWithText(description).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NETWORK_IMAGE).assertIsNotDisplayed()
     }
 
     @Test
@@ -46,6 +49,6 @@ class ReelComponentTest {
                 )
             )
         }
-        composeTestRule.onNodeWithText(description).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NETWORK_IMAGE).assertIsDisplayed()
     }
 }
