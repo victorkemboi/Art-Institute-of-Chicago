@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import mes.inc.aic.common.constants.NETWORK_IMAGE
 import mes.inc.aic.common.constants.NETWORK_IMAGE_LOADER
 import mes.inc.aic.common.data.model.Artwork
@@ -87,7 +88,7 @@ fun ArtworkComponent(
     thumbnailModifier: Modifier = Modifier.width(150.dp).height(150.dp)
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(modifier = thumbnailModifier.background(Primary).height(IntrinsicSize.Max)) {
+        Box(modifier = thumbnailModifier.background(randomColor()).height(IntrinsicSize.Max)) {
             artwork.thumbnail?.let {
                 NetworkImage(
                     link = it,
@@ -163,4 +164,37 @@ fun Search(query: String = "", onQueryChanged: (String) -> Unit, modifier: Modif
             }
         )
     }
+}
+
+@Composable
+fun Timer(
+    resetTimer: Boolean = false,
+    action: () -> Unit = {},
+    onResetTimer: () -> Unit = {},
+    progressInterval: Long = 1_000,
+    progressCycle: Float = refreshReelTime.inWholeSeconds.toFloat(),
+    onProgressChanged: @Composable (Float) -> Unit = {},
+) {
+    var timer by remember { mutableStateOf(progressCycle) }
+    var progress by remember { mutableStateOf(1F) }
+
+    LaunchedEffect(resetTimer) {
+        if (resetTimer) {
+            action()
+            timer = progressCycle
+            onResetTimer()
+        }
+    }
+
+    LaunchedEffect(timer) {
+        if (timer == 0F) {
+            action()
+            timer = progressCycle
+        }
+        delay(progressInterval)
+        timer -= 1
+        progress = (timer % progressCycle) / progressCycle
+    }
+
+    onProgressChanged(progress)
 }

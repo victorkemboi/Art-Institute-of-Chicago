@@ -98,25 +98,25 @@ class HomeScreenStateScopeTest : KoinTest {
 
     @Test
     fun reelsDoRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refresh = true) }
+        composeTestRule.setContent { HomeScreenStateScope(refreshArtworks = true) }
         coVerify(exactly = 1) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun reelsDoeNotRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refresh = false) }
+        composeTestRule.setContent { HomeScreenStateScope(refreshArtworks = false) }
         coVerify(exactly = 0) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun artworksDoRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refresh = true) }
+        composeTestRule.setContent { HomeScreenStateScope(refreshArtworks = true) }
         coVerify(exactly = 1) { artworkRepository.fetchArtworkReels() }
     }
 
     @Test
     fun artworksDoeNotRefresh() {
-        composeTestRule.setContent { HomeScreenStateScope(refresh = false) }
+        composeTestRule.setContent { HomeScreenStateScope(refreshArtworks = false) }
         coVerify(exactly = 0) { artworkRepository.fetchArtworkReels() }
     }
 
@@ -125,7 +125,7 @@ class HomeScreenStateScopeTest : KoinTest {
         var artworks = listOf<Artwork>()
         coEvery { artworkRepository.fetchArtworks() } returns flowOf(listOf(Artwork()))
         composeTestRule.setContent {
-            HomeScreenStateScope(refresh = true) {
+            HomeScreenStateScope(refreshArtworks = true) {
                 artworks = it.value.artworks
             }
         }
@@ -138,7 +138,7 @@ class HomeScreenStateScopeTest : KoinTest {
         var reel: Reel? = null
         coEvery { artworkRepository.fetchArtworkReels() } returns expectedReel
         composeTestRule.setContent {
-            HomeScreenStateScope(refresh = true) {
+            HomeScreenStateScope(refreshArtworks = true) {
                 reel = it.value.reel
             }
         }
